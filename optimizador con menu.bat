@@ -169,10 +169,10 @@ echo ======= FASE 5 MANTENIMIENTO PROFUNDO ============
 echo =================================================
 echo.
 
-echo Programando verificación de disco...
+echo ===[1/2]Programando verificación de disco...
 chkdsk C: /r
 echo.
-echo Ejecutando comprobación de archivos del sistema...
+echo ===[2/2]Ejecutando comprobación de archivos del sistema...
 sfc /scannow
 
 echo.
@@ -199,19 +199,28 @@ echo ============[1/4] limpiando: %%TEMP%% ================
 RD /S /Q "%TEMP%" 2>nul
 DEL /F /S /Q "%TEMP%\*" 2>nul
 
+timeout /t 4
+
 echo ============[2/4] limpiando: C:\Windows\Temp =========
 RD /S /Q "C:\Windows\Temp" 2>nul
 DEL /F /S /Q "C:\Windows\Temp\*" 2>nul
+
+timeout /t 4
 
 echo ============[3/4] limpiando: Prefetch ===============
 RD /S /Q "C:\Windows\Prefetch" 2>nul
 DEL /F /S /Q "C:\Windows\Prefetch\*" 2>nul
 
+timeout /t 4
+
 echo ============[4/4] limpiando: Spool\Printers =========
 net stop spooler >nul 2>&1
+timeout /t 4
 RD /S /Q "%systemroot%\System32\spool\PRINTERS" 2>nul
 DEL /F /S /Q "%systemroot%\System32\spool\PRINTERS\*" 2>nul
+timeout /t 4
 net start spooler >nul 2>&1
+
 
 echo Limpieza de temporales completada correctamente.
 
@@ -226,16 +235,20 @@ echo ======= INICIANDO FASE 2 DESACTIVANDO SERVICIOS ===
 echo =================================================
 echo.
 
+timeout /t 4
 net stop SysMain 2>nul
 sc config SysMain start= disabled
+
+timeout /t 4
 net stop Diagtrack 2>nul
 sc config DiagTrack start= disabled
 
+timeout /t 4
 for %%S in (XblAuthManager XblGameSave XboxNetApiSvc XboxGipSvc) do (
     net stop %%S 2>nul
     sc config %%S start= disabled
 )
-
+timeout /t 4
 echo Servicios innecesarios deshabilitados correctamente.
 
 
@@ -248,11 +261,12 @@ echo =================================================
 echo ======= INICIANDO FASE 3 AJUSTES VISUALES ========
 echo =================================================
 echo.
-
+timeout /t 4
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v "VisualFXSetting" /t REG_DWORD /d "2" /f >nul
 for %%K in (CursorShadow DWM_Animations FontSmoothing HotTracking ListviewAlphaSelect ListviewShadow ShowApps ShowTaskbarThumbal SlideTaskbar TaskbarAnimations Themes VisualStyles AnimateOpen EnableAnimations Shadows SmoothScroll AnimateWindows) do (
     REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v "%%K" /t REG_DWORD /d "0" /f >nul
 )
+timeout /t 4
 taskkill /f /im explorer.exe >nul 2>&1
 timeout /t 5 /nobreak >nul
 start explorer.exe
@@ -286,10 +300,10 @@ echo ======= FASE 5 MANTENIMIENTO PROFUNDO ============
 echo =================================================
 echo.
 
-echo Programando verificación de disco...
-chkdsk C: /r
+echo ===[1/2] Programando verificación de disco...
+echo S | chkdsk C: /r
 echo.
-echo Ejecutando comprobación de archivos del sistema...
+echo ===[1/2]Ejecutando comprobación de archivos del sistema...
 sfc /scannow
 
 echo.
