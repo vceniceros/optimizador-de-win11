@@ -74,35 +74,34 @@ echo.
 echo ============[1/6] limpiando: %%TEMP%% ================
 RD /S /Q "%TEMP%" 2>nul
 DEL /F /S /Q "%TEMP%\*" 2>nul
-timeout /t /nobreak 4 /nobreak
+timeout /t 4 /nobreak
 
 echo ============[2/6] limpiando: C:\Windows\Temp =========
 RD /S /Q "C:\Windows\Temp" 2>nul
 DEL /F /S /Q "C:\Windows\Temp\*" 2>nul
-timeout /t /nobreak 4 /nobreak
+timeout /t 4 /nobreak
 
 echo ============[3/6] limpiando: Prefetch ===============
 RD /S /Q "C:\Windows\Prefetch" 2>nul
 DEL /F /S /Q "C:\Windows\Prefetch\*" 2>nul
-timeout /t /nobreak 4 /nobreak
+timeout /t 4 /nobreak
 
 echo ============[4/6] limpiando: Spool\Printers =========
 net stop spooler >nul 2>&1
 RD /S /Q "%systemroot%\System32\spool\PRINTERS" 2>nul
 DEL /F /S /Q "%systemroot%\System32\spool\PRINTERS\*" 2>nul
-timeout /t /nobreak 4 /nobreak
+timeout /t 4 /nobreak
 net start spooler >nul 2>&1
-timeout /t /nobreak 4 /nobreak
-
+timeout /t 4 /nobreak
 echo ============[5/6] limpiando temporales de actualizacion ===
 RD /S /Q "C:\Windows\SoftwareDistribution\Download" 2>nul
 DEL /F /S /Q "C:\Windows\SoftwareDistribution\Download\*" 2>nul
-timeout /t /nobreak 4 /nobreak
+timeout /t 4 /nobreak 
 
 
 echo ============[6/6] ejecutando clean mgr =================
 cleanmgr /d C
-timeout /t /nobreak 4 /nobreak
+timeout /t 4 /nobreak 
 
 
 echo Limpieza de temporales completada correctamente.
@@ -218,36 +217,33 @@ echo.
 echo ============[1/6] limpiando: %%TEMP%% ================
 RD /S /Q "%TEMP%" 2>nul
 DEL /F /S /Q "%TEMP%\*" 2>nul
-timeout /t /nobreak 4 /nobreak
+timeout /t 4 /nobreak
 
 echo ============[2/6] limpiando: C:\Windows\Temp =========
 RD /S /Q "C:\Windows\Temp" 2>nul
 DEL /F /S /Q "C:\Windows\Temp\*" 2>nul
-timeout /t /nobreak 4 /nobreak
-
+timeout /t 4 /nobreak
 echo ============[3/6] limpiando: Prefetch ===============
 RD /S /Q "C:\Windows\Prefetch" 2>nul
 DEL /F /S /Q "C:\Windows\Prefetch\*" 2>nul
-timeout /t /nobreak 4 /nobreak
+timeout /t 4 /nobreak
 
 echo ============[4/6] limpiando: Spool\Printers =========
 net stop spooler >nul 2>&1
 RD /S /Q "%systemroot%\System32\spool\PRINTERS" 2>nul
 DEL /F /S /Q "%systemroot%\System32\spool\PRINTERS\*" 2>nul
-timeout /t /nobreak 4 /nobreak
+timeout /t 4 /nobreak
 net start spooler >nul 2>&1
-timeout /t /nobreak 4 /nobreak
+timeout /t 4 /nobreak
 
 echo ============[5/6] limpiando temporales de actualizacion ===
 RD /S /Q "C:\Windows\SoftwareDistribution\Download" 2>nul
 DEL /F /S /Q "C:\Windows\SoftwareDistribution\Download\*" 2>nul
-timeout /t /nobreak 4 /nobreak
-
+timeout /t 4 /nobreak
 
 echo ============[6/6] ejecutando clean mgr =================
 cleanmgr /d C
-timeout /t /nobreak 4 /nobreak
-
+timeout /t 4 /nobreak
 
 echo Limpieza de temporales completada correctamente.
 
@@ -264,20 +260,20 @@ echo ======= INICIANDO FASE 2 DESACTIVANDO SERVICIOS ===
 echo =================================================
 echo.
 
-timeout /t /nobreak 4
+timeout /t 4 /nobreak
 net stop SysMain 2>nul
 sc config SysMain start= disabled
 
-timeout /t /nobreak 4
+timeout /t 4 /nobreak
 net stop Diagtrack 2>nul
 sc config DiagTrack start= disabled
 
-timeout /t /nobreak 4
+timeout /t 4 /nobreak
 for %%S in (XblAuthManager XblGameSave XboxNetApiSvc XboxGipSvc) do (
     net stop %%S 2>nul
     sc config %%S start= disabled
 )
-timeout /t /nobreak 4
+timeout /t 4 /nobreak
 echo Servicios innecesarios deshabilitados correctamente.
 
 
@@ -290,12 +286,12 @@ echo =================================================
 echo ======= INICIANDO FASE 3 AJUSTES VISUALES ========
 echo =================================================
 echo.
-timeout /t /nobreak 4
+timeout /t 4 /nobreak
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v "VisualFXSetting" /t REG_DWORD /d "2" /f >nul
 for %%K in (CursorShadow DWM_Animations FontSmoothing HotTracking ListviewAlphaSelect ListviewShadow ShowApps ShowTaskbarThumbal SlideTaskbar TaskbarAnimations Themes VisualStyles AnimateOpen EnableAnimations Shadows SmoothScroll AnimateWindows) do (
     REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v "%%K" /t REG_DWORD /d "0" /f >nul
 )
-timeout /t /nobreak 4
+timeout /t 4 /nobreak
 taskkill /f /im explorer.exe >nul 2>&1
 timeout /t 5 /nobreak >nul
 start explorer.exe
