@@ -1,33 +1,48 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# Configuración de la ventana
+# --- COMPATIBILIDAD CON WINDOWS 7 ---
+$scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$imagePath = Join-Path $scriptPath "logo.png"
+
+# --- CONFIGURACION DE LA VENTANA ---
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "MANTENIMIENTO IT"
-$form.BackColor = "DarkRed" # Color de fondo alarmante
-$form.TopMost = $true # Siempre visible encima de todo
-$form.FormBorderStyle = "None" # Sin bordes ni botones X
-$form.WindowState = "Maximized" # Pantalla completa
-$form.ShowInTaskbar = $false # No aparece en la barra de tareas
+$form.Text = "SOPORTE IT ACTIVO"
+$form.BackColor = "DarkRed"
+$form.TopMost = $true
+$form.Width = 750
+$form.Height = 650  
+$form.StartPosition = "CenterScreen"
+$form.FormBorderStyle = "FixedSingle"
+$form.ControlBox = $false
+$form.ShowInTaskbar = $false
 
-# Configuración del texto
+# --- 1. CONFIGURACION DE LA IMAGEN ---
+if (Test-Path $imagePath) {
+    $pictureBox = New-Object System.Windows.Forms.PictureBox
+    $pictureBox.ImageLocation = $imagePath
+    $pictureBox.SizeMode = "Zoom"
+    $pictureBox.Height = 350    
+    $pictureBox.Dock = "Bottom"    
+    $pictureBox.BackColor = "DarkRed"
+    
+    # Agregamos la imagen primero
+    $form.Controls.Add($pictureBox)
+    $pictureBox.Add_DoubleClick({ $form.Close() })
+}
+
+# --- 2. CONFIGURACION DEL TEXTO  ---
 $label = New-Object System.Windows.Forms.Label
-$label.Text = "MANTENIMIENTO EN CURSO`n`nPOR FAVOR NO TOQUE EL EQUIPO`n`nSOPORTE TÉCNICO ESTÁ TRABAJANDO"
-$label.AutoSize = $true
+$label.Text = "MANTENIMIENTO EN CURSO`n`nPor favor, NO toque el mouse ni el teclado.`n`nSoporte tecnico esta trabajando en este equipo, cualquier consulta comuniquese al interno: 6300."
 $label.ForeColor = "White"
-$label.Font = New-Object System.Drawing.Font("Arial", 24, [System.Drawing.FontStyle]::Bold)
-$label.TextAlign = "MiddleCenter"
+$label.Font = New-Object System.Drawing.Font("Arial", 18, [System.Drawing.FontStyle]::Bold)
+$label.TextAlign = "TopCenter" 
+$label.Padding = New-Object System.Windows.Forms.Padding(0, 40, 0, 0) 
+$label.Dock = "Fill" 
 
-# Centrar el texto en pantalla (calculo dinámico)
-$form.Add_Load({
-    $label.Location = New-Object System.Drawing.Point(
-        ($form.Width - $label.Width) / 2,
-        ($form.Height - $label.Height) / 2
-    )
-})
+$label.Add_DoubleClick({ $form.Close() })
 
-# Agregar el texto al formulario
-$form.Controls.Add($label)
+$form.Controls.Add($label) 
 
-# Mostrar la ventana (Detiene el script aquí hasta que se cierre)
+# --- MOSTRAR ---
 $form.ShowDialog()
