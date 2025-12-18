@@ -10,8 +10,8 @@ $form = New-Object System.Windows.Forms.Form
 $form.Text = "SOPORTE IT ACTIVO"
 $form.BackColor = "DarkRed"
 $form.TopMost = $true
-$form.Width = 750
-$form.Height = 650  
+$form.Width = 650
+$form.Height = 550  
 $form.StartPosition = "CenterScreen"
 $form.FormBorderStyle = "FixedSingle"
 $form.ControlBox = $false
@@ -22,7 +22,7 @@ if (Test-Path $imagePath) {
     $pictureBox = New-Object System.Windows.Forms.PictureBox
     $pictureBox.ImageLocation = $imagePath
     $pictureBox.SizeMode = "Zoom"
-    $pictureBox.Height = 350    
+    $pictureBox.Height = 250    
     $pictureBox.Dock = "Bottom"    
     $pictureBox.BackColor = "DarkRed"
     
